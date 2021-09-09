@@ -1,8 +1,8 @@
-import 'dart:typed_data';
+// import 'dart:typed_data';
+// import 'package:file_picker/file_picker.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:duck_gun/models/produto_model.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class EditProdutoPage extends StatefulWidget {
@@ -16,16 +16,28 @@ class EditProdutoPage extends StatefulWidget {
 
 class _EditProdutoPageState extends State<EditProdutoPage> {
   @override
-  late final produtoCont = TextEditingController()..text = widget.produto.produto;
+  late final produtoCont = TextEditingController()
+    ..text = widget.produto.produto;
   // late final autorCont = TextEditingController()..text = widget.produto.autor;
   late final precoCont = TextEditingController()..text = widget.produto.preco;
-  late final quantidadeCont = TextEditingController()..text = widget.produto.quantidade;
+  late final quantidadeCont = TextEditingController()
+    ..text = widget.produto.quantidade;
+  late final categoriaCont = TextEditingController()
+    ..text = widget.produto.categoria;
+  late final idCont = TextEditingController()
+    ..text = widget.produto.id;
+  late final descontoCont = TextEditingController()
+    ..text = widget.produto.desconto;
+  late final descricaoCont = TextEditingController()
+    ..text = widget.produto.descricao;
+
+
   // late Uint8List? file = widget.produto.imagem;
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar diário'),
+        title: Text('Editar Produto'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -71,6 +83,31 @@ class _EditProdutoPageState extends State<EditProdutoPage> {
                   labelText: "Preco",
                 ),
               ),
+              TextField(
+                controller: categoriaCont,
+                decoration: InputDecoration(
+                  labelText: "Categoria",
+                ),
+              ),
+              TextField(
+                controller: idCont,
+                decoration: InputDecoration(
+                  labelText: "Id",
+                ),
+              ),
+              TextField(
+                controller: descontoCont,
+                decoration: InputDecoration(
+                  labelText: "Desconto",
+                ),
+              ),
+              TextField(
+                controller: descricaoCont,
+                decoration: InputDecoration(
+                  labelText: "Descrição",
+                ),
+                maxLines: 10,
+              ),
               const SizedBox(
                 height: 8,
               ),
@@ -103,11 +140,17 @@ class _EditProdutoPageState extends State<EditProdutoPage> {
                     ownerKey: widget.produto.ownerKey,
                     produto: produtoCont.text,
                     // autor: autorCont.text,
-                    preco: widget.produto.preco,
+                    preco: precoCont.text,
                     quantidade: quantidadeCont.text,
+                    categoria: categoriaCont.text,
+                    id: idCont.text,
+                    desconto: descontoCont.text,
+                    descricao: descricaoCont.text,
 
                     // imagem: file,
                   ).toMap();
+
+                  print(atualizado);
 
                   await FirebaseFirestore.instance
                       .collection('produtos')
@@ -116,7 +159,7 @@ class _EditProdutoPageState extends State<EditProdutoPage> {
 
                   Navigator.pop(context);
                 },
-                child: Text('Atualizar diário'),
+                child: Text('Atualizar produto'),
               ),
             ],
           ),

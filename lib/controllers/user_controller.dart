@@ -21,7 +21,7 @@ class UserController extends ChangeNotifier {
     _auth.authStateChanges().listen((user) async {
       if (user != null) {
         authState = AuthState.signed;
-        final data = await _db.collection('usuarios').doc(user.uid).get();
+        final data = await _db.collection('vendedor').doc(user.uid).get();
         model = UserModel.fromMap(data.data()!);
       } else {
         authState = AuthState.unsigned;
@@ -55,7 +55,7 @@ class UserController extends ChangeNotifier {
     final data = payload.toMap();
     data['key'] = uid;
 
-    final doc = _db.collection('usuarios').doc(uid);
+    final doc = _db.collection('vendedor').doc(uid);
     await doc.set(data);
   }
 }

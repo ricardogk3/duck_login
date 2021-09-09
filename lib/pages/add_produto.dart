@@ -15,6 +15,10 @@ class AddProduto extends StatefulWidget {
 
 class _AddProdutoState extends State<AddProduto> {
   String produto = "", preco = "", quantidade = "";
+  String categoria= "";
+  String id= "";
+  String desconto= "";
+  String descricao= "";
   // Uint8List? file;
 
   late final userController = Provider.of<UserController>(
@@ -52,6 +56,35 @@ class _AddProdutoState extends State<AddProduto> {
                 ),
                 onChanged: (texto) => quantidade = texto,
               ),
+              TextField(
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.location_on),
+                  labelText: "Categoria",
+                ),
+                onChanged: (texto) => categoria= texto,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.location_on),
+                  labelText: "Id",
+                ),
+                onChanged: (texto) => id = texto,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.location_on),
+                  labelText: "Desconto",
+                ),
+                onChanged: (texto) => desconto = texto,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.location_on),
+                  labelText: "Descrição",
+                ),
+                maxLines: 10,
+                onChanged: (texto) => descricao = texto,
+              ),
               const SizedBox(height: 8),
               // ElevatedButton(
               //   onPressed: () async {
@@ -85,12 +118,17 @@ class _AddProdutoState extends State<AddProduto> {
 
                   final novoProduto = ProdutoModel(
                     ownerKey: userController.user!.uid,
-                    produto: produto,
+                    produto: produto, 
                     preco: preco,
                     quantidade: quantidade,
+                    categoria: categoria,
+                    id: id,
+                    desconto: desconto,
+                    descricao: descricao,
                   ).toMap();
 
                   print(novoProduto);
+                
 
                   await FirebaseFirestore.instance
                       .collection('produtos')

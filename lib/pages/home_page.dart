@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF4D734F),
         title: Text("Home"),
         actions: [
           IconButton(
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
         stream: FirebaseFirestore.instance
             .collection('produtos')
             .where('ownerKey', isEqualTo: userController.user!.uid)
-            // .orderBy('titulo')
+            // .orderBy('produto')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
