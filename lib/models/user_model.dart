@@ -9,7 +9,6 @@ class UserModel {
   final String email;
   final Uint8List? fotoPerfil;
 
-
   UserModel({
     required this.nome,
     required this.email,

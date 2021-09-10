@@ -1,3 +1,4 @@
+import 'package:duck_gun/pages/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 
 class SplashLoadingWidget extends StatelessWidget {
@@ -14,8 +15,10 @@ class SplashLoadingWidget extends StatelessWidget {
                 Icons.airplanemode_active,
                 color: Color(0xFFA8BFB2),
               ),
+              
               Icon(
-                Icons.favorite,
+                MyFlutterApp.mp5,
+                size: 35,
                 color: Color(0xFFA8BFB2),
               ),
             ],

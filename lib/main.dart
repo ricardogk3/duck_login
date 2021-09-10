@@ -1,4 +1,5 @@
 import 'package:duck_gun/controllers/user_controller.dart';
+import 'package:duck_gun/pages/dashboard.dart';
 import 'package:duck_gun/pages/splash_animation.dart';
 // import 'package:duck_gun/pages/splash_animation.dart';
 import 'package:duck_gun/pages/splash_page.dart';
@@ -21,16 +22,18 @@ class MyApp extends StatelessWidget {
         title: 'Duck Gun',
         theme: ThemeData(
           primaryColor: Color(0xFFA8BFB2),
+          primarySwatch: Colors.green,
           accentColor: Color(0xFF4D734F),
-          appBarTheme: AppBarTheme(backgroundColor: Color(0x36402C)),
+          appBarTheme: AppBarTheme(backgroundColor: Color(0xFF4D734F)),
         ),
-      // #A8BFB2 - verde mais clarinho
-      // #6C8C74 - verde musgo
-      // #4D734F- verde militar
-      // #36402C- verde acinzentado 
-      // #0D0D0D- preto
+        // #A8BFB2 - verde mais clarinho
+        // #6C8C74 - verde musgo
+        // #4D734F- verde militar
+        // #36402C- verde acinzentado 
+        // #0D0D0D- preto
         debugShowCheckedModeBanner: false,
         home: SplashAnimation(),
+        // home: Dashboard(),
         // home: SplashPage(),
       ),
     );

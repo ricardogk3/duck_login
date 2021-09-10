@@ -10,8 +10,9 @@ class ProdutoModel {
   final String quantidade;
   final String categoria;
   final String id;
-  final String desconto;
+  final bool? promocao;
   final String descricao;
+  final Uint8List? imagem;
   
 
   // final String? key;
@@ -30,8 +31,9 @@ class ProdutoModel {
     required this.quantidade,
     required this.categoria,
     required this.id,
-    required this.desconto,
+    this.promocao,
     required this.descricao,
+    this.imagem,
     
 
     // required this.ownerKey,
@@ -44,15 +46,16 @@ class ProdutoModel {
 
   static ProdutoModel fromMap(Map<String, dynamic> map, [String? key]) =>
       ProdutoModel(
-        key: map['key'],
+        key: key,
         ownerKey: map['ownerKey'],
         produto: map['produto'],
         preco: map['preco'],
         quantidade: map['quantidade'],
-        categoria: 'categoria',
-        id: 'id',
-        desconto: 'desconto',
-        descricao: 'descricao',
+        categoria:  map['categoria'],
+        id: map['id'],
+        promocao: map['promocao'],
+        descricao: map['descricao'],
+        imagem: map['imagem']?.bytes,
 
         // titulo: map['titulo'],
         // autor: map['autor'],
@@ -68,14 +71,15 @@ class ProdutoModel {
         'quantidade': quantidade,
         'categoria': categoria,
         'id': id,
-        'desconto': desconto,
+        'promocao': promocao,
         'descricao': descricao,
+        'imagem': imagem != null ? Blob(imagem!) : null,
         
 
         // 'titulo': titulo,
         // 'autor': autor,
         // 'local': local,
         // 'diario': diario,
-        // 'imagem': imagem != null ? Blob(imagem!) : null,
+        // 'imagem': imagem != null ? Blob(imagem!) : null, 
       };
 }

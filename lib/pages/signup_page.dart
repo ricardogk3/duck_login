@@ -17,9 +17,11 @@ class _SignupPageState extends State<SignupPage> {
   String senha = "";
   String cnpj = "";
   // var textEditingController = TextEditingController(text: "123.456.789/5555-10");
+  final _formKey = GlobalKey<FormState>();
   var maskFormatter = new MaskTextInputFormatter(
       mask: '###.###.###/####-##', filter: {"#": RegExp(r'[0-9]')});
   // textEditingController.value = maskFormatter.updateMask(mask: "##-##-##-##"); // -> "12-34-56-78"
+  // double ipp = double.parse(ip.replaceAll('.', ''));
 
   late final userController = Provider.of<UserController>(
     context,
@@ -62,6 +64,7 @@ class _SignupPageState extends State<SignupPage> {
             SizedBox(height: 12),
             Container(
               child: Form(
+                key: _formKey,
                 child: Container(
                   padding: EdgeInsets.all(10),
                   child: Column(
@@ -76,7 +79,16 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                       SizedBox(height: 12),
-                      if (isLoading) CircularProgressIndicator(),
+                      Container(
+                        height: 50,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            if (isLoading) CircularProgressIndicator(),
+                          ],
+                        ),
+                      ),
 
                       // TextFormField(
                       //   onChanged: (texto) => nome = texto,
@@ -151,6 +163,16 @@ class _SignupPageState extends State<SignupPage> {
 
                       TextFormField(
                         // controller: textEditingController,
+                        validator: (String? texto) {
+                          if (texto != null && texto.isNotEmpty) {
+                            if (texto.length < 19) {
+                              // print('erro email');
+                              return 'CNPJ incorreto!';
+                            }
+                          } else {
+                            return 'Preencha os campos.';
+                          }
+                        },
                         inputFormatters: [maskFormatter],
                         onChanged: (texto) => cnpj = texto,
                         decoration: InputDecoration(
@@ -160,10 +182,31 @@ class _SignupPageState extends State<SignupPage> {
                             labelText: 'Informe seu CNPJ'),
                       ),
                       SizedBox(height: 12),
+                      // prefixIcon: Icon(Icons.lock),
+                      // suffixIcon: Icon(Icons.visibility)
+
+                      // TextFormField(
+                      //   obscureText: true,
+                      //   onChanged: (texto) => senha = texto,
+                      //   keyboardType: TextInputType.number,
+                      //   decoration: InputDecoration(
+                      //     labelText: 'Senha',
+                      //     border: OutlineInputBorder(),
+                      //     errorStyle: TextStyle(color: Colors.red.shade700),
+                      //   ),
+                      // ),
+
                       TextFormField(
-                        obscureText: true,
+                        validator: (String? texto) {
+                          if (texto != null && texto.isNotEmpty) {
+                            if (texto.length < 8)
+                              return 'Digite uma senha com 8 caracteres ou mais';
+                          } else {
+                            return 'Campo obrigatório';
+                          }
+                        },
                         onChanged: (texto) => senha = texto,
-                        keyboardType: TextInputType.number,
+                        obscureText: true,
                         decoration: InputDecoration(
                           labelText: 'Senha',
                           border: OutlineInputBorder(),
@@ -178,33 +221,51 @@ class _SignupPageState extends State<SignupPage> {
                             onPrimary: Color(0xFF0D0D0D), // foreground
                           ),
                           onPressed: () async {
-                            try {
-                              final user = UserModel(nome: nome, email: email);
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await userController.signup(email, senha, user);
-                              Navigator.pop(context);
-                            } on FirebaseAuthException catch (e) {
-                              setState(() {
-                                isLoading = false;
-                              });
-                              var msg = '';
+                            // final formState = _formKey.currentState;
+                            if (_formKey.currentState?.validate() ?? false) {
+                              // print('Login feito!');
+                              try {
+                                final user = UserModel(nome: nome, email: email);
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                await userController.signup(email, senha, user);
+                                Navigator.pop(context);
+                              } on FirebaseAuthException catch (e) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                var msg = '';
 
-                              if (e.code == 'weak-password') {
-                                msg = 'Senha fraca!';
-                              } else if (e.code == 'email-already-in-use') {
-                                msg = 'Email já cadastrado';
-                              } else {
-                                msg = 'Ocorreu um erro';
+                                print(e.code);
+
+                                if (e.code == 'weak-password') {
+                                  msg = 'Senha fraca!';
+                                } else if (e.code == 'email-already-in-use') {
+                                  msg = 'Email já cadastrado';
+                                } else if (e.code == 'invalid-email') {
+                                  msg = 'Email inválido';
+                                } else {
+                                  msg = 'Ocorreu um erro';
+                                }
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(msg),
+                                  ),
+                                );
                               }
+                            } else{
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(msg),
-                                ),
-                              );
+                                var msg = 'Dados incorretos';
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(msg),
+                                  ),
+                                );
                             }
+
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -228,114 +289,3 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//     Scaffold(
-//       appBar: AppBar(
-//         title: Text("Criar conta"),
-//       ),
-//       body: Form(
-//         child: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Column(
-//             children: [
-//               if (isLoading) CircularProgressIndicator(),
-//               TextFormField(
-//                 decoration: InputDecoration(labelText: 'Nome'),
-//                 onChanged: (texto) => nome = texto,
-//               ),
-//               TextFormField(
-//                 decoration: InputDecoration(labelText: 'Email'),
-//                 onChanged: (texto) => email = texto,
-//               ),
-//               TextFormField(
-//                 decoration: InputDecoration(labelText: 'CNPJ'),
-//                 onChanged: (texto) => cnpj = texto,
-//               ),
-//               TextFormField(
-//                 decoration: InputDecoration(labelText: 'Senha'),
-//                 obscureText: true,
-//                 onChanged: (texto) => senha = texto,
-//               ),
-//               ElevatedButton(
-//                 // onPressed: () async {
-//                 //   final user = UserModel(nome: nome);
-//                 //   await userController.signup(email, senha, user);
-//                 //   Navigator.pop(context);
-//                 // },
-//                 onPressed: () async {
-//                   try {
-//                     final user = UserModel(nome: nome, email: email);
-//                     setState(() {
-//                       isLoading = true;
-//                     });
-//                     await userController.signup(email, senha, user);
-//                     Navigator.pop(context);
-//                   } on FirebaseAuthException catch (e) {
-//                     setState(() {
-//                       isLoading = false;
-//                     });
-//                     var msg = '';
-
-//                     if (e.code == 'weak-password') {
-//                       msg = 'Senha fraca!';
-//                     } else if (e.code == 'email-already-in-use') {
-//                       msg = 'Email já cadastrado';
-//                     } else {
-//                       msg = 'Ocorreu um erro';
-//                     }
-
-//                     ScaffoldMessenger.of(context).showSnackBar(
-//                       SnackBar(
-//                         content: Text(msg),
-//                       ),
-//                     );
-//                   }
-//                 },
-//                 child: Text("Criar conta"),
-//               ),
-
-//               // ElevatedButton(
-//               //   onPressed: () async {
-//               //     final payload = {
-//               //       'nome': nome,
-//               //     };
-//               //     // await userController.signup(email, senha, payload);
-//               //     await userController.signup(email, senha, payload);
-
-//               //     Navigator.pop(context);
-//               //   },
-//               //   child: Text("Criar conta"),
-//               // ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

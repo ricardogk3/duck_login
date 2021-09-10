@@ -17,7 +17,7 @@ class UserController extends ChangeNotifier {
 
   User? get user => _auth.currentUser;
 
-  UserController() {
+  UserController() { 
     _auth.authStateChanges().listen((user) async {
       if (user != null) {
         authState = AuthState.signed;
@@ -59,3 +59,4 @@ class UserController extends ChangeNotifier {
     await doc.set(data);
   }
 }
+
