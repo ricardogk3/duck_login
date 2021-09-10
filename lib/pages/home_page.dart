@@ -28,18 +28,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF4D734F),
-        title: Text("Home"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await userController.logout();
-            },
-            icon: Icon(Icons.exit_to_app),
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Color(0xFF4D734F),
+      //   title: Text("Home"),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () async {
+      //         await userController.logout();
+      //       },
+      //       icon: Icon(Icons.exit_to_app), 
+      //     )
+      //   ],
+      // ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -153,3 +153,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
+
+

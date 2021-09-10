@@ -57,12 +57,14 @@ class _EditProdutoPageState extends State<EditProdutoPage> {
         ],
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
           child: Form(
             key: _formKey,
             child: Column(
               children: [
+                
                 TextFormField(
                   validator: (String? produtoCont) {
                     if (produtoCont != null && produtoCont.isNotEmpty) {
@@ -92,6 +94,7 @@ class _EditProdutoPageState extends State<EditProdutoPage> {
                   ),
                   validator: (String? precoCont) {
                     try {
+
                       var a = double.parse(
                           precoCont!.replaceAll('.', '').replaceAll(',', ''));
                       if (a == int || a == double) {

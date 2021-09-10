@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xFFA8BFB2),
           primarySwatch: Colors.green,
           accentColor: Color(0xFF4D734F),
-          appBarTheme: AppBarTheme(backgroundColor: Color(0xFF4D734F)),
+          appBarTheme: AppBarTheme(backgroundColor: Color(0xFF36402C)),
         ),
         // #A8BFB2 - verde mais clarinho
         // #6C8C74 - verde musgo

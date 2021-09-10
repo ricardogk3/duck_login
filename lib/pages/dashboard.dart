@@ -59,12 +59,7 @@ Material myItems(IconData icon, String heading, int color) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard',
-        style: TextStyle(
-          color: Colors.white ),
-        ),
-      ),
+
       body: StaggeredGridView.count(
         crossAxisCount: 2,
         crossAxisSpacing: 12.0,

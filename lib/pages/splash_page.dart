@@ -1,7 +1,7 @@
+import 'package:duck_gun/pages/nav_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../controllers/user_controller.dart';
-import 'home_page.dart';
 import 'login_page.dart';
 import '../widgets/splash_loading_widget.dart';
 
@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
       builder: (context, userController, child) {
         switch (userController.authState) {
           case AuthState.signed:
-            return HomePage();
+            return NavPage();
           case AuthState.unsigned:
             return LoginPage();
           case AuthState.loading:

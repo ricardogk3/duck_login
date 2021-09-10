@@ -50,6 +50,7 @@ class _AddProdutoState extends State<AddProduto> {
         title: Text("Adicionar produto"),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
           child: Form(
@@ -231,7 +232,7 @@ class _AddProdutoState extends State<AddProduto> {
                     setState(() {
                                   isLoading = false;
                                 });
-                    final formState = _formKey.currentState;
+                    // final formState = _formKey.currentState;
                     if (_formKey.currentState?.validate() ?? false) {
                       final novoProduto = ProdutoModel(
                         ownerKey: userController.user!.uid,
