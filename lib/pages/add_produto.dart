@@ -283,7 +283,7 @@ class _AddProdutoState extends State<AddProduto> {
                       ),
                     ),
                   ),
-                ),
+                ), 
                 const SizedBox(
                   height: 8,
                 ),
