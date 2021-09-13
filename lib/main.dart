@@ -29,16 +29,14 @@ class MyApp extends StatelessWidget {
         // #A8BFB2 - verde mais clarinho
         // #6C8C74 - verde musgo
         // #4D734F- verde militar
-        // #36402C- verde acinzentado 
+        // #36402C- verde acinzentado
         // #0D0D0D- preto
         debugShowCheckedModeBanner: false,
         home: SplashAnimation(),
+
         // home: Dashboard(),
         // home: SplashPage(),
       ),
     );
   }
 }
-
-
-
