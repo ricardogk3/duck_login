@@ -1,89 +1,84 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:duck_gun/controllers/user_controller.dart';
+import 'package:duck_gun/models/compras_model.dart';
+import 'package:duck_gun/models/produto_model.dart';
+import 'package:duck_gun/pages/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
+  // final ComprasModel dados;
 
+  // Dashboard({required this.dados});
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-
-Material myItems(IconData icon, String heading, int color) {
-  return Material(
-    color: Colors.white,
-    elevation: 14.0,
-    shadowColor: Color(0x802196F3),
-    borderRadius: BorderRadius.circular(24.0),
-    child: Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      heading,
-                        style: TextStyle(
-                          color: new Color(color),
-                            fontSize: 20.0,
-                    ),
-                  ),
-                ),
-                Material(
-                  color: new Color(color),
-                  borderRadius: BorderRadius.circular(24.0),
-                  child: Padding(
-                     padding: const EdgeInsets.all(16.0),
-                     child: Icon(
-                       icon, 
-                       color: Colors.white,
-                       size: 30.0,
-                     ),
-                  ),
-                ),            
-              ],
-            )
-          ],
-        ),
-      ),
-    ),
+  late final userController = Provider.of<UserController>(
+    context,
+    listen: false,
   );
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: StaggeredGridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12.0,
-        mainAxisSpacing: 12.0,
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      children: <Widget>[
-        myItems(Icons.graphic_eq, 'Fuzil', 0xFF6c8c74),
-        myItems(Icons.graphic_eq, 'Pistola', 0xFF6c8c74),
-        myItems(Icons.graphic_eq, 'Granadas', 0xFF6c8c74),
-        myItems(Icons.graphic_eq, 'Aéreo', 0xFF6c8c74),
-        myItems(Icons.graphic_eq, 'Tanque', 0xFF6c8c74),
-        myItems(Icons.graphic_eq, 'Diversos', 0xFF6c8c74),
-        myItems(Icons.graphic_eq, 'Receita', 0xFF6c8c74),
-      ],
-      staggeredTiles: [
-        StaggeredTile.extent(2, 130.0),
-        StaggeredTile.extent(2, 130.0),
-        StaggeredTile.extent(1, 130.0),
-        StaggeredTile.extent(1, 130.0),
-        StaggeredTile.extent(1, 130.0),
-        StaggeredTile.extent(1, 130.0),
-        StaggeredTile.extent(2, 240.0),
-      ],
-        ),
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance
+            .collection('carrinho')
+            .where('keyVendedor', isEqualTo: userController.user!.uid)
+            // .orderBy('produto')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          final produtos = snapshot.data!.docs.map((map) {
+            final data = map.data();
+            return ProdutoModel.fromMap(data, map.id);
+          }).toList();
+
+          return ListView.builder(
+            itemCount: produtos.length,
+            itemBuilder: (context, index) {
+              final produto = produtos[index];
+              return ListTile(
+                title: Text(produto.produto),
+                subtitle: Row(
+                  children: [
+                    // Icon(Ionicons.cart_outline),
+                    Icon(MyFlutterApp.mp5),
+                    Text(produto.quantidade),
+                    Icon(Ionicons.cash_outline),
+                    Text(produto.preco),
+                  ],
+                ),
+                leading: produto.imagem != null
+                    ? Image.memory(
+                        produto.imagem!,
+                        width: 100,
+                      )
+                    : Container(
+                        // child: Icon(Icons.location_on),
+                        child: Icon(
+                          // Ionicons.cart_outline,
+                          Icons.camera_alt,
+                          size: 35,
+                        ),
+                        width: 72,
+                        height: double.maxFinite,
+                        color: Color(0xFF4D734F),
+                      ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
+

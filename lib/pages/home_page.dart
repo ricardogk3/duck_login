@@ -40,45 +40,47 @@ class _HomePageState extends State<HomePage> {
       //     )
       //   ],
       // ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: Text(userController.model.nome),
-              accountEmail: Text(userController.user!.email!),
-              currentAccountPicture: CircleAvatar(
-                radius: 60.0,
-                backgroundColor: const Color(0xFF778899),
-                // backgroundImage: NetworkImage(userController.user!.fotoPerfil!,), // for Network image
-              ),
-            ),
 
-            // ListTile(
-            //   leading: Icon(Icons.list_alt),
-            //   title: const Text('Todos os diários'),
-            //   onTap: () {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => TodosProdutos(),
-            //         ));
-            //   },
-            // ),
-            // ListTile(
-            //   leading: Icon(Icons.list_alt),
-            //   title: const Text('Todos os usuários'),
-            //   onTap: () {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => TodosUsers(),
-            //         ));
-            //   },
-            // ),
-          ],
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: [
+      //       UserAccountsDrawerHeader(
+      //         accountName: Text(userController.model.nome),
+      //         accountEmail: Text(userController.user!.email!),
+      //         currentAccountPicture: CircleAvatar(
+      //           radius: 60.0,
+      //           backgroundColor: const Color(0xFF778899),
+      //           // backgroundImage: NetworkImage(userController.user!.fotoPerfil!,), // for Network image
+      //         ),
+      //       ),
+
+      //       // ListTile(
+      //       //   leading: Icon(Icons.list_alt),
+      //       //   title: const Text('Todos os diários'),
+      //       //   onTap: () {
+      //       //     Navigator.push(
+      //       //         context,
+      //       //         MaterialPageRoute(
+      //       //           builder: (context) => TodosProdutos(),
+      //       //         ));
+      //       //   },
+      //       // ),
+      //       // ListTile(
+      //       //   leading: Icon(Icons.list_alt),
+      //       //   title: const Text('Todos os usuários'),
+      //       //   onTap: () {
+      //       //     Navigator.push(
+      //       //         context,
+      //       //         MaterialPageRoute(
+      //       //           builder: (context) => TodosUsers(),
+      //       //         ));
+      //       //   },
+      //       // ),
+      //     ],
+      //   ),
+      // ),
+
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
             .collection('produtos')
@@ -106,12 +108,14 @@ class _HomePageState extends State<HomePage> {
                     // Icon(Ionicons.cart_outline),
                     Icon(MyFlutterApp.mp5),
                     Text(produto.quantidade),
+                    Icon(Ionicons.cash_outline),
+                    Text(produto.preco),
                   ],
                 ),
                 leading: produto.imagem != null
                     ? Image.memory(
                         produto.imagem!,
-                        width: 72,
+                        width: 100,
                       )
                     : Container(
                         // child: Icon(Icons.location_on),
