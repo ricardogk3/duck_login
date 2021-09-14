@@ -1,6 +1,8 @@
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:duck_gun/pages/splash_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 bool repet = true;
 
@@ -12,22 +14,30 @@ class SplashAnimation extends StatefulWidget {
   State<SplashAnimation> createState() => _SplashAnimationState();
 }
 
-class _SplashAnimationState extends State<SplashAnimation> with TickerProviderStateMixin {
+class _SplashAnimationState extends State<SplashAnimation>
+    with TickerProviderStateMixin {
   late final AnimationController controller;
   late final AnimationController controller1;
   late final Animation<double> animationBomba;
+  late final Animation<double> fogoBomba;
+  late final Animation<double> fogoBombaMovimento;
   late final Animation<double> explosaoBomba;
   late final Animation<double> telablack;
   late final Animation<double> patofogo;
   late final Animation<double> telablackWidthAnimation;
   late final Animation<double> telablackHeightAnimation;
+  // late final player = AudioCache();
+  // bool musica = true;
+
+  // void tocador() {
+  //   if (musica) {player.play("../music/excluir.mp3");}
+  // }
 
   @override
   void initState() {
     // var deviceData = MediaQuery.of(context);
     // var screen = deviceData.size;
     // print(screen);
-
     super.initState();
     controller =
         new AnimationController(duration: Duration(seconds: 6), vsync: this)
@@ -37,8 +47,18 @@ class _SplashAnimationState extends State<SplashAnimation> with TickerProviderSt
       ..addListener(() => setState(() {}));
     animationBomba = Tween(begin: -500.0, end: 1200.0).animate(CurvedAnimation(
         parent: controller, curve: Interval(0.0, 0.5, curve: Curves.ease)));
+    fogoBombaMovimento = Tween(begin: -700.0, end: 1000.0).animate(
+        CurvedAnimation(
+            parent: controller, curve: Interval(0.0, 0.5, curve: Curves.ease)));
     // animationBomba = Tween(begin: -500.0, end: 1200.0).animate(controller);
     // controller.forward();
+
+    // fogoBomba = Tween(begin: -500.0, end: 1200.0).animate(CurvedAnimation(
+    //     parent: controller, curve: Interval(0.0, 0.5, curve: Curves.ease)));
+    // // animationBomba = Tween(begin: -500.0, end: 1200.0).animate(controller);
+    // // controller.forward();
+    fogoBomba = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: controller, curve: Interval(0.00, 0.25, curve: Curves.ease)));
 
     explosaoBomba = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -46,28 +66,23 @@ class _SplashAnimationState extends State<SplashAnimation> with TickerProviderSt
     );
 
     telablack = Tween(begin: 0.0, end: 1.0).animate(
-      // CurvedAnimation(
+        // CurvedAnimation(
         // parent: controller1,
         // curve: Interval(0.5, 0.509, curve: Curves.easeOut))
-        controller1
-        );
+        controller1);
     telablackWidthAnimation = Tween(begin: 1.0, end: 400.0).animate(
         // CurvedAnimation(parent: controller1, curve: Interval(0.60, 0.85))
-        controller1
-        );
+        controller1);
     telablackHeightAnimation = Tween(begin: 5.0, end: 100.0).animate(
         // CurvedAnimation(parent: controller1, curve: Interval(0.1, 0.35))
-        controller1
-        );
+        controller1);
 
     patofogo = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: controller, curve: Interval(0.35, 0.99, curve: Curves.ease)));
 
-
     controller.forward();
     Future.delayed(const Duration(milliseconds: 5000), () {
-      
-      print(repet);
+      // print(repet);
       if (repet) {
         controller1.addStatusListener((status) {
           if (status == AnimationStatus.completed) {
@@ -82,20 +97,22 @@ class _SplashAnimationState extends State<SplashAnimation> with TickerProviderSt
         controller1.stop();
       }
     });
-    
+
     Future.delayed(const Duration(milliseconds: 6050), () {
       Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-          // since this triggers when the animation is done, no duration is needed
-          builder: (context) => SplashPage()),
-    );
+        MaterialPageRoute(
+            // since this triggers when the animation is done, no duration is needed
+            builder: (context) => SplashPage()),
+      );
     });
-    
   }
-
 
   @override
   Widget build(BuildContext context) {
+
+
+    // tocador();
+
     var deviceData = (MediaQuery.of(context).size.width - 500) / 2;
     var screen = deviceData;
     // print(screen);
@@ -105,6 +122,42 @@ class _SplashAnimationState extends State<SplashAnimation> with TickerProviderSt
       backgroundColor: Colors.black,
       body: Stack(
         children: <Widget>[
+          Center(
+            child: Transform.translate(
+              child: Opacity(
+                opacity: fogoBomba.value,
+                child: Container(
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        "images/fogo.gif",
+                      ),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+              offset: Offset(0.0, fogoBombaMovimento.value),
+            ),
+          ),
+
+          // Opacity(
+          //   opacity: fogoBomba.value,
+          //   child: Container(
+          //     width: 90.0,
+          //     height: 90.0,
+          //     decoration: BoxDecoration(
+          //       image: DecorationImage(
+          //         image: AssetImage(
+          //           "images/fogo.gif",
+          //         ),
+          //         fit: BoxFit.fill,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Center(
             child: Transform.translate(
               child: Image.asset('images/ms.png'),

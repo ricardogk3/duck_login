@@ -1,4 +1,5 @@
 // import 'package:duck_gun/pages/navegacao/perfil.dart';
+import 'package:duck_gun/controllers/compras_controller.dart';
 import 'package:duck_gun/controllers/user_controller.dart';
 import 'package:duck_gun/pages/dashboard.dart';
 import 'package:duck_gun/pages/historico.dart';
@@ -25,16 +26,23 @@ class _NavPageState extends State<NavPage> {
     context,
     listen: false,
   );
+  late final comprasController = Provider.of<UserController>(
+    context,
+    listen: false,
+  );
+
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   late List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    // Historico(),
-    Dashboard(),
+    Historico(),
+    // Dashboard(
+    //   // dados: comprasController.model
+    //   ),
     Perfil(dados: userController.model),
-  ];
+  ]; 
 
   void _onItemTapped(int index) {
     setState(() {
